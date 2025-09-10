@@ -1,0 +1,258 @@
+{
+  "name": "Tupload",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return $input.first().json.body"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [224, 0],
+      "id": "dd291560-7dc1-47fc-baad-9bf8cf9c1aa2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "video": "={{ $json.url }}",
+            "description": "={{ $json.description }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "video",
+              "displayName": "video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [448, 0],
+      "id": "1a1c6354-3085-4feb-856c-3cdad9f4d67a",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w5gCl6AEAv5N1FuX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": \"video upload\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [672, 0],
+      "id": "bd72ffe4-ff51-462e-ace6-5d953dcbbba9",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://fsmvid.com/api/proxy",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.url }}"
+            },
+            {
+              "name": "platform",
+              "value": "={{ $json.platform }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 304],
+      "id": "a3c500fa-c910-4ac2-b881-862174a47266",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.first().json.body"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [256, 304],
+      "id": "8049d6f0-4065-4b78-b4ae-2d7e08919509",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [704, 304],
+      "id": "55fbc7c2-9570-4eb3-9db9-c0498714d2b8",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "searchVideo",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [32, 304],
+      "id": "9c6a52b8-b73b-4cbf-8218-592dd01b0a2d",
+      "name": "getVideo",
+      "webhookId": "35fce519-2754-4d20-81ad-727dacd09de6"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tiktok-upload",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "id": "ac95c2c1-e9f1-47c3-86de-8b372197d470",
+      "name": "uploadVideo",
+      "webhookId": "9f4d0087-9189-4a69-b439-c77e5f1ffa6f"
+    },
+    {
+      "parameters": {
+        "content": "## Get data of video",
+        "height": 240,
+        "width": 960,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-48, 224],
+      "typeVersion": 1,
+      "id": "db226f29-7fbb-4c22-9001-9dfd4637fceb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Video on your social media",
+        "height": 224,
+        "width": 960,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-48, -64],
+      "typeVersion": 1,
+      "id": "9718273c-be99-47b8-8188-36d0951d241f",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getVideo": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "uploadVideo": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8479b631-e158-46c1-ab27-69fc64a5ef18",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b7197c9797265448e62bf0f2bdca893dba05541daf7c8a4406f265df04e3ac1"
+  },
+  "id": "k4kzfyO8JXh3NIiw",
+  "tags": []
+}
