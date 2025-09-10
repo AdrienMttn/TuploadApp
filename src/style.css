@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap");
+:root {
+  font-family: "TikTok Sans", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #ffffffde;
+  background-color: #0d0e0e;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  filter: drop-shadow(0px 1px 0px #fd3e3e) drop-shadow(-1px -1px 0px #4de8f4);
+}
+
+input {
+  outline: none;
+}
+
+.upload {
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 3px #fd3e3e) drop-shadow(-2px -1px 3px #4de8f4);
+  transition: 0.2s;
+}
+
+.upload:active {
+  transition: 0.2s;
+  filter: none;
+}
